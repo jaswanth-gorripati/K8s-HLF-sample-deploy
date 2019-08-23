@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: peer0-configmap
+data:
+  CORE_PEER_ADDRESSAUTODETECT: "true"
+  CORE_PEER_ID: peer0.k8sOrg.example.com
+  CORE_PEER_NETWORKID: nid1
+  CORE_PEER_LISTENADDRESS: 0.0.0.0:7051
+  CORE_PEER_EVENTS_ADDRESS: 0.0.0.0:7053
+  CORE_PEER_COMMITTER_ENABLED: "true"
+  CORE_PEER_PROFILE_ENABLED: "true"
+  CORE_PEER_DISCOVERY_PERIOD: 60s
+  CORE_PEER_DISCOVERY_TOUCHPERIOD: 60s
+  CORE_PEER_LOCALMSPID: k8sOrgMSP
+  CORE_PEER_MSPCONFIGPATH: /etc/hyperledger/fabric/msp
+  CORE_PEER_CHAINCODEADDRESS: 0.0.0.0:7052
+  CORE_PEER_CHAINCODELISTENADDRESS: peer0-k8sorg:7052
+  FABRIC_LOGGING_SPEC: debug
+  CORE_LOGGING_PEER: debug
+  CORE_LOGGING_CAUTHDSL: debug
+  CORE_LOGGING_GOSSIP: debug
+  CORE_LOGGING_LEDGER: debug
+  CORE_LOGGING_MSP: debug
+  CORE_LOGGING_POLICIES: debug
+  CORE_LOGGING_GRPC: debug
+  CORE_PEER_GOSSIP_BOOTSTRAP: ""
+  CORE_PEER_GOSSIP_ENDPOINT: ""
+  CORE_PEER_GOSSIP_EXTERNALENDPOINT: ""
+  CORE_PEER_GOSSIP_ORGLEADER: "false"
+  CORE_PEER_GOSSIP_USELEADERELECTION: "true"
+  CORE_PEER_TLS_ENABLED: "true"
+  CORE_PEER_TLS_CERT_FILE: "/etc/hyperledger/fabric/tls/server.crt"
+  CORE_PEER_TLS_KEY_FILE: "/etc/hyperledger/fabric/tls/server.key"
+  CORE_PEER_TLS_ROOTCERT_FILE: "/etc/hyperledger/fabric/tls/ca.crt"
+  CORE_PEER_TLS_CLIENTAUTHREQUIRED: "false"
+  CORE_PEER_TLS_CLIENTROOTCAS_FILES: "/etc/hyperledger/fabric/client/ca.crt"
+  CORE_PEER_TLS_CLIENTCERT_FILE: "/etc/hyperledger/fabric/client/client.crt"
+  CORE_PEER_TLS_CLIENTKEY_FILE: "/etc/hyperledger/fabric/client/client.key"
+  CORE_VM_ENDPOINT: unix:///host/var/run/docker.sock
+  CORE_LEDGER_STATE_STATEDATABASE: CouchDB
+  CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS: couchdb0:5984
+  PEER_CFG_PATH: /var/hyperledger/config
+  FABRIC_CFG_PATH: /var/hyperledger/fabric_cfg
+  GODEBUG: "netdns=go"
+  ADMIN_MSP_PATH: /var/hyperledger/admin_msp
+  ORD_TLS_PATH: /var/hyperledger/tls/ord/cert

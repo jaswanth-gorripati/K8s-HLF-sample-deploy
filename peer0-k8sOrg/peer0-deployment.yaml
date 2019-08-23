@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peer0-k8sorg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: peer0-k8sorg
+  template:
+    metadata:
+      label:
+        component: peer0-k8sorg
+    spec:
+      volumes:
+        - name: peer0-data
+          persistentVolumeClaim:
+            claimName: peer0-data
+        - name: peer0-tls
+          secret:
+            secretName: peer0-tls
+        - name: peer0-admin-cert
+          secret:
+            secretName: peer0-admin-cert
+        - name: peer0-cacert
+          secret:
+            secretName: peer0-cacert
+        - name: peer0-keystore
+          secret:
+            secretName: peer0-keystore
+        - name: peer0-signcert
+          secret:
+            secertName: peer0-signcert
+        - name: peer0-tlscacert
+          secret:
+            secretName: peer0-tlscacert
+        - name: peer0-admin-tls
+          secret:
+            secretName: peer0-admin-tls
+      containers:
+        - name: peer0-k8sorg
+          image: hyperledger/fabric-peer:1.4.1
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: peer0-configmap
+          ports:
+            - name: "receive"
+              containerPort:  7051
+              protocol: TCP
+            - name: "event"
+              containerPort: 7053
+              protocol: TCP
+          command: ["peer", "node", "start"]
+          volumeMounts:
+            - name: peer0-data
+              mountPath: /var/hyperledger/production
+            - mountPath: /host/var/run/docker.sock
+              name: dockersocket
+            - name: 

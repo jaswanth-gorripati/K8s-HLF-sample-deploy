@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb1-k8sorg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: couchdb1-k8sorg
+  template:
+    metadata:
+      labels:
+        component: couchdb1-k8sorg
+    spec:
+      volumes:
+        - name: couchdb1-data
+          persistentVolumeClaim:
+            claimName: couchdb1-data
+      containers:
+        - name: couchdb1-k8sorg
+          image: hyperledger/fabric-couchdb:0.4.15
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5984
+          volumeMounts:
+            - name: couchdb1-data
+              mountPath: /opt/couchdb/data

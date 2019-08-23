@@ -1,0 +1,14 @@
+kubectl create secret generic admin-cert.pem --from-file=admin-cert.pem=./msp/admincerts/Admin@example.com-cert.pem 
+kubectl create secret generic cacert.pem --from-file=cacert.pem=./msp/cacerts/ca.example.com-cert.pem 
+kubectl create secret generic orderer-keystore.pem --from-file=orderer-keystore.pem=./msp/keystore/981ac8473d3624fd647fe7d44457ec7c118ad49e8353cc4c3eeae58da5f234d1_sk 
+kubectl create secret generic orderer0-signcert.pem --from-file=orderer0-signcert.pem=./msp/signcerts/orderer0.example.com-cert.pem 
+kubectl create secret generic orderer-tlscacert.pem --from-file=orderer-tlscacert.pem=./msp/tlscacerts/tlsca.example.com-cert.pem
+
+
+kubectl create secret generic orderer-tls --from-file=ca.crt=./tls/ca.crt --from-file=server.crt=./tls/server.crt --from-file=server.key=./tls/server.key
+
+kubectl create secret generic orderer-client-tls --from-file=ca.crt=../../orderers/orderer0.example.com/tls/ca.crt --from-file=client.crt=./tls/client.crt --from-file=client.key=./tls/client.key
+
+kubectl create secret generic genesis.block --from-file=genesis.block=./genesis.block
+
+kubectl create secret generic kchannel.tx --from-file=kchannel.tx=./kchannel.tx

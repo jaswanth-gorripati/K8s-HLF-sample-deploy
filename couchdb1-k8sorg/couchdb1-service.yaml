@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb1
+spec:
+  type: ClusterIP
+  selector:
+    component: couchdb1-k8sorg
+  ports:
+    - port: 6984
+      targetPort: 5984

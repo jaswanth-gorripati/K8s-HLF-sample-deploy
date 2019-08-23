@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-k8sorg
+spec:
+  type: ClusterIP
+  selector:
+    component: peer0-k8sorg
+  ports:
+    - port: 7051
+      targetPort: 7051
+    - port: 7052
+      targetPort: 7052
+    - port: 7053
+      targetPort: 7053

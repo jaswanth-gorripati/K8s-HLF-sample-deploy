@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-k8sorg-com
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: ca-k8sorg-com
+  template:
+    metadata:
+      labels:
+        component: ca-k8sorg-com
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: ca-pvc-claim
+        - name: ca-pem
+          secret:
+            secretName: ca-pem
+        - name: key-pem
+          secret:
+            secretName: key-pem
+      containers:
+        - name: ca-k8sorg-com
+          image: hyperledger/fabric-ca:1.4.1
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: ca-config-map
+          ports:
+            - containerPort: 7054
+              protocol: TCP
+          # livenessProbe:
+          #   httpsGet:
+          #     path: /cainfo
+          #     port: 7054
+          # readinessProbe:
+          #   httpsGet:
+          #     path: /cainfo
+          #     port: 7054             
+          volumeMounts:
+            - name: data
+              mountPath: /etc/hyperledger/fabric-ca-server
+            - name: ca-pem
+              readOnly: true
+              mountPath: /etc/hyperledger/fabric-ca-server-config/ca.pem
+            - name: key-pem
+              readOnly: true
+              mountPath: /etc/hyperledger/fabric-ca-server-config/key.pem
+          command: ["fabric-ca-server", "start", "--ca.certfile", "/etc/hyperledger/fabric-ca-server-config/ca.pem/ca-pem", "--ca.keyfile", "/etc/hyperledger/fabric-ca-server-config/key.pem/key-pem", "-b", "admin:adminpw", "-d"]
+            #- sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/key.pem -b admin:adminpw -d'
+            #- ["fabric-ca-server", "start", "--ca.certfile", "/etc/hyperledger/fabric-ca-server-config/ca.pem", "--ca.keyfile", "/etc/hyperledger/fabric-ca-server-config/key.pem", "-b", "admin:adminpw", "-d"]
+            #- (ls /etc/hyperledger/)
+          
+

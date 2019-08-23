@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ca-config-map
+data:
+  GODEBUG: "netdns=go"
+  FABRIC_CA_HOME: /etc/hyperledger/fabric-ca-server
+  FABRIC_CA_SERVER_CA_NAME: ca-k8sOrg-com
+  FABRIC_CA_SERVER_TLS_ENABLED: "true"
+  FABRIC_CA_SERVER_TLS_CERTFILE: /etc/hyperledger/fabric-ca-server-config/ca.pem/ca-pem
+  FABRIC_CA_SERVER_TLS_KEYFILE: /etc/hyperledger/fabric-ca-server-config/key.pem/key-pem
+  SERVICE_DNS: 0.0.0.0

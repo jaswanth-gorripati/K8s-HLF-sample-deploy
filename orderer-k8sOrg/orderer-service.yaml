@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer-k8sorg-service
+spec:
+  type: ClusterIP
+  selector:
+    component: orderer-k8sorg-com
+  ports:
+    - port: 7050
+      targetPort: 7050

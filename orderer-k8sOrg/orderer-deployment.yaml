@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer-k8sorg-com
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: orderer-k8sorg-com
+  template:
+    metadata:
+      labels:
+        component: orderer-k8sorg-com
+    spec:
+      volumes:
+        - name: orderer-data
+          persistentVolumeClaim:
+            claimName: orderer-pvc
+        - name: dockersocket
+          hostPath:
+            path: /var/run/docker.sock
+        - name: admin-cert
+          secret:
+            secretName: admin-cert.pem
+        - name: cacert
+          secret:
+            secretName: cacert.pem
+        - name: orderer-keystore
+          secret:
+            secretName: orderer-keystore.pem
+        - name: orderer0-signcert
+          secret:
+            secretName: orderer0-signcert.pem
+        - name: orderer-tlscacert
+          secret:
+            secretName: orderer-tlscacert.pem
+        - name: orderer-tls
+          secret:
+            secretName: orderer-tls
+        - name: orderer-client-tls
+          secret:
+            secretName: orderer-client-tls
+        - name: genesis
+          secret:
+            secretName: genesis.block
+      containers:
+        - name: orderer-k8sorg-com
+          image: hyperledger/fabric-orderer:1.4.1
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: orderer-configmap
+          ports:
+            - containerPort: 7050
+              protocol: TCP
+          volumeMounts:
+            - name: orderer-data
+              mountPath: /var/hyperledger/production/orderer
+            - name: admin-cert
+              mountPath: /var/hyperledger/orderer/msp/admincerts/
+            - name: cacert
+              mountPath: /var/hyperledger/orderer/msp/cacerts/
+            - name: orderer-keystore
+              mountPath: /var/hyperledger/orderer/msp/keystore/
+            - name: orderer0-signcert
+              mountPath: /var/hyperledger/orderer/msp/signcerts/
+            - name: orderer-tlscacert
+              mountPath: /var/hyperledger/orderer/msp/tlscacerts/
+            - name: orderer-tls
+              readOnly: true
+              mountPath: /var/hyperledger/orderer/tls/
+            - name: orderer-client-tls
+              readOnly: true
+              mountPath: /var/hyperledger/users/Admin@example.com/tls/
+            - name: genesis
+              readOnly: true
+              mountPath: /var/hyperledger/orderer/
+          command: ["orderer"]
+        
